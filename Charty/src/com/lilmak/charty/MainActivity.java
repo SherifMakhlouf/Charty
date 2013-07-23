@@ -12,9 +12,10 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         PieChart chart =  (PieChart) findViewById(R.id.pieChart1);
         int[] perc = {30,30,30,10};
-        chart.init(perc).withNames(new String[]{"Android","iOS","BB","WP8"});
+        int[] colors = {0xFF33B5E5,0xFFAA66CC,0xFF669900,0xFFCC0000};
+        String[] names = {"Android","iOS","BB","WP7"};
+        chart.init(perc,colors);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
