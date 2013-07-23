@@ -36,13 +36,14 @@ public class PieChart extends View {
 		super(context, attrs);
 		percentages = new int[] { 100 };
 		sectionColors = new int[] { 0xFF33B5E5 };
+		
 	}
 
 	/**
-	 * Initializes a chart
+	 * Initializes a chart 
 	 * 
 	 * @param percentages
-	 *            Percentage per section
+	 *            Percentage per section (sum of percentages must be less than or equal to 100)
 	 * @param colors
 	 *            Color per section
 	 * @return
@@ -50,10 +51,21 @@ public class PieChart extends View {
 	public PieInitializer init(int[] percentages, int[] colors) {
 		this.percentages = percentages;
 		this.sectionColors = colors;
+		if(percentages == null || colors == null)
+			throw new IllegalArgumentException("Percentages and Colors cant be null ");
+		
 		if (this.percentages.length != this.sectionColors.length)
 			throw new IllegalArgumentException(
 					"Number of Values must be equal to number of SectionColors");
-
+		int sum =0;
+		for(int i =0; i < this.percentages.length; i++)
+		{
+			sum += this.percentages[i];
+		}
+		
+		if(sum > 100)
+			throw new IllegalArgumentException("Sum of percentages must be less than or equal 100");
+		
 		this.lableType = LableType.NUMBERS;
 		return new PieInitializer();
 	}
@@ -150,15 +162,25 @@ public class PieChart extends View {
 		int prevAngle = 0;
 		// Draw the first section
 		archRect = new RectF(0, 0, getMeasuredWidth(), getMeasuredHeight());
-		canvas.drawArc(archRect, 0, angle, true, sectionPaint);
-		drawLabel(canvas, percentages[0]+"%", getMeasuredWidth()/2, getMeasuredHeight()/2, getMeasuredWidth()/2, prevAngle, angle, textPaint);
-		// Draw the remainder sections
-		for (int i = 1; i < percentages.length; i++) {
+
+		for (int i = 0; i < percentages.length; i++) {
 			angle = 360 * percentages[i] / 100;
-			prevAngle += 360 * percentages[i - 1] / 100;
+			if (i > 0)
+				prevAngle += 360 * percentages[i - 1] / 100;
 			sectionPaint.setColor(sectionColors[i]);
 			canvas.drawArc(archRect, prevAngle, angle, true, sectionPaint);
-			drawLabel(canvas, percentages[i]+"%", getMeasuredWidth()/2, getMeasuredHeight()/2, getMeasuredWidth()/2, prevAngle, angle, textPaint);
+			
+			switch (lableType) {
+			case NUMBERS:
+				drawLabel(canvas, percentages[i]+"%", getMeasuredWidth()/2, getMeasuredHeight()/2, getMeasuredWidth()/2, prevAngle, angle, textPaint);
+				break;
+			case NAME :
+				drawLabel(canvas, sectionNames[i], getMeasuredWidth()/2, getMeasuredHeight()/2, getMeasuredWidth()/2, prevAngle, angle, textPaint);
+				break;
+			case NONE:
+				break;
+			}
+			
 		}
 
 		

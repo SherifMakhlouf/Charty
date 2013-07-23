@@ -14,7 +14,7 @@ public class MainActivity extends Activity {
         int[] perc = {30,30,30,10};
         int[] colors = {0xFF33B5E5,0xFFAA66CC,0xFF669900,0xFFCC0000};
         String[] names = {"Android","iOS","BB","WP7"};
-        chart.init(perc,colors);
+        chart.init(perc,colors).withSectionNames(names);
     }
 
     @Override
