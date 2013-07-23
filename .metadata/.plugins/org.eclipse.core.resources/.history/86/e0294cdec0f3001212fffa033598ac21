@@ -1,0 +1,30 @@
+package com.lilmak.charty;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.util.AttributeSet;
+import android.view.View;
+
+public class PieChart extends View {
+	/**
+	 * The type of the data drawn over the chart
+	 */
+	enum Hint {
+		NONE, NUMBERS, NAME
+	}
+	private int[] percentages;
+	private Color[] archsColors;
+	private Color[] textColor;
+	private final Color defaultTextColor;
+	
+	public PieChart(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		// TODO Auto-generated constructor stub
+	}
+	
+	public class PieInitializer
+	{
+		
+	}
+
+}

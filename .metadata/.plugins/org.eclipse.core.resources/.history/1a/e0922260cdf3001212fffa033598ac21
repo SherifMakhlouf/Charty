@@ -1,0 +1,45 @@
+package com.lilmak.charty;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.util.AttributeSet;
+import android.view.View;
+
+public class PieChart extends View {
+	/**
+	 * The type of the data drawn over the chart
+	 */
+	enum Hint {
+		NONE, NUMBERS, NAME
+	}
+
+	private int[] percentages;
+	private String[] names;
+	private Color[] archsColors;
+	private Color[] textColor;
+	private int textSize;
+	// private final Color defaultTextColor;
+	private final int defaultTextSize;
+
+	private PieChart(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		defaultTextSize = (int) getResources().getDimension(
+				R.dimen.defaultTextSize);
+	}
+
+	public PieInitializer init(int[] percentages) {
+		this.percentages = percentages;
+		
+		return new PieInitializer();
+	}
+
+	public class PieInitializer {
+		
+		public PieInitializer withNames(String[] names)
+		{
+			PieChart.this.names = names;
+			return this;
+		}
+	}
+
+}

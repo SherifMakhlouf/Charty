@@ -1,0 +1,72 @@
+package com.lilmak.charty;
+
+import android.content.Context;
+import android.graphics.Paint;
+import android.util.AttributeSet;
+import android.view.View;
+
+public class PieChart extends View {
+	/**
+	 * The type of the data drawn over the chart
+	 */
+	enum HintMode {
+		NONE, NUMBERS, NAME
+	}
+
+	private int[] percentages;
+	private String[] sectionNames;
+	private int[] sectionColors;
+	private int textColor;
+	private int textSize;
+	private HintMode hintMode;
+	private final int defaultTextSize;
+	
+	private final Paint sectionPaint ;
+	private final Paint textPaint;
+
+	private PieChart(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		defaultTextSize = (int) getResources().getDimension(
+				R.dimen.defaultTextSize);
+	}
+
+	public PieInitializer init(int[] percentages) {
+		this.percentages = percentages;
+		this.hintMode = hintMode.NUMBERS;
+		return new PieInitializer();
+	}
+
+	public class PieInitializer {
+		public PieInitializer inMode(HintMode mode) {
+			hintMode = mode;
+			return this;
+		}
+
+		public PieInitializer withNames(String[] names) {
+			sectionNames = names;
+			return this;
+		}
+
+		public PieInitializer withTextColor(int color) {
+			textColor = color;
+			return this;
+		}
+
+		public PieInitializer withSectionColors(int[] colors) {
+			sectionColors = colors;
+			return this;
+		}
+
+		public PieInitializer withTextSize(int size) {
+			textSize = size;
+			return this;
+		}
+	}
+	
+	@Override
+	protected void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		sectionPaint = new Paint();
+	}
+
+}

@@ -1,0 +1,4 @@
+INDEX VERSION 1.126+/media/sherif/E/Code/Github/Charty/Charty/.metadata/.plugins/org.eclipse.jdt.core
+1374664586.index
+846367607.index
+598777602.index
