@@ -36,14 +36,15 @@ public class PieChart extends View {
 		super(context, attrs);
 		percentages = new int[] { 100 };
 		sectionColors = new int[] { 0xFF33B5E5 };
-		
+
 	}
 
 	/**
-	 * Initializes a chart 
+	 * Initializes a chart
 	 * 
 	 * @param percentages
-	 *            Percentage per section (sum of percentages must be less than or equal to 100)
+	 *            Percentage per section (sum of percentages must be less than
+	 *            or equal to 100)
 	 * @param colors
 	 *            Color per section
 	 * @return
@@ -51,27 +52,28 @@ public class PieChart extends View {
 	public PieInitializer init(int[] percentages, int[] colors) {
 		this.percentages = percentages;
 		this.sectionColors = colors;
-		if(percentages == null || colors == null)
-			throw new IllegalArgumentException("Percentages and Colors cant be null ");
-		
+		if (percentages == null || colors == null)
+			throw new IllegalArgumentException(
+					"Percentages and Colors cant be null ");
+
 		if (this.percentages.length != this.sectionColors.length)
 			throw new IllegalArgumentException(
 					"Number of Values must be equal to number of SectionColors");
-		int sum =0;
-		for(int i =0; i < this.percentages.length; i++)
-		{
+		int sum = 0;
+		for (int i = 0; i < this.percentages.length; i++) {
 			sum += this.percentages[i];
 		}
-		
-		if(sum > 100)
-			throw new IllegalArgumentException("Sum of percentages must be less than or equal 100");
-		
+
+		if (sum > 100)
+			throw new IllegalArgumentException(
+					"Sum of percentages must be less than or equal 100");
+
 		this.lableType = LableType.NUMBERS;
 		return new PieInitializer();
 	}
 
 	public class PieInitializer {
-		
+
 		/**
 		 * Sets the type of labels (None,Numbers,Name)
 		 * 
@@ -109,7 +111,8 @@ public class PieChart extends View {
 		}
 
 		/**
-		 * Sets the name for each section (Automatically sets the labelType to LableType.NAMES)
+		 * Sets the name for each section (Automatically sets the labelType to
+		 * LableType.NAMES)
 		 * 
 		 * @param names
 		 *            names per each section (must be equal to the number of
@@ -132,7 +135,7 @@ public class PieChart extends View {
 		super.onAttachedToWindow();
 		sectionPaint = new Paint();
 		textPaint = new Paint();
-		
+
 		textPaint.setColor((textColor != -1 ? textColor : getResources()
 				.getColor(R.color.defaultTextColor)));
 		textPaint.setTextSize((textSize != -1 ? textSize : getResources()
@@ -168,44 +171,45 @@ public class PieChart extends View {
 			if (i > 0)
 				prevAngle += 360 * percentages[i - 1] / 100;
 			sectionPaint.setColor(sectionColors[i]);
-			canvas.drawArc(archRect, prevAngle, angle, true, sectionPaint);
-			
+			canvas.drawArc(archRect, prevAngle, -1 * angle, true, sectionPaint);
+
 			switch (lableType) {
 			case NUMBERS:
-				drawLabel(canvas, percentages[i]+"%", getMeasuredWidth()/2, getMeasuredHeight()/2, getMeasuredWidth()/2, prevAngle, angle, textPaint);
+				drawLabel(canvas, percentages[i] + "%", getMeasuredWidth() / 2,
+						getMeasuredHeight() / 2, getMeasuredWidth() / 2,
+						prevAngle, angle, textPaint);
 				break;
-			case NAME :
-				drawLabel(canvas, sectionNames[i], getMeasuredWidth()/2, getMeasuredHeight()/2, getMeasuredWidth()/2, prevAngle, angle, textPaint);
+			case NAME:
+				drawLabel(canvas, sectionNames[i], getMeasuredWidth() / 2,
+						getMeasuredHeight() / 2, getMeasuredWidth() / 2,
+						prevAngle, angle, textPaint);
 				break;
 			case NONE:
 				break;
 			}
-			
+
 		}
 
-		
 	}
-	
+
 	protected void drawLabel(Canvas canvas, String labelText, int centerX,
-			int centerY, float radius,
-			float currentAngle, float angle,
+			int centerY, float radius, float currentAngle, float angle,
 			Paint paint) {
 
-		double halfAngle = Math.toRadians(currentAngle + angle /2);
+		double halfAngle = Math.toRadians(currentAngle + -1 * angle / 2);
 		double sinValue = Math.sin(halfAngle);
 		double cosValue = Math.cos(halfAngle);
-		
+
 		int x2 = Math.round(centerX + (float) (radius * cosValue));
 		int y2 = Math.round(centerY + (float) (radius * sinValue));
-		
-		
-		float widthLabel = paint.measureText(labelText) /2;
-		float heightLable= paint.getTextSize()/2;
-		float xLable = radius + (2.0f/3)*(x2-radius);
-		float yLable = radius + (2.0f/3)*(y2-radius);
-		
-		
-		canvas.drawText(labelText, xLable-widthLabel, yLable+heightLable, paint);
+
+		float widthLabel = paint.measureText(labelText) / 2;
+		float heightLable = paint.getTextSize() / 2;
+		float xLable = radius + (2.0f / 3) * (x2 - radius);
+		float yLable = radius + (2.0f / 3) * (y2 - radius);
+
+		canvas.drawText(labelText, xLable - widthLabel, yLable + heightLable,
+				paint);
 
 	}
 
